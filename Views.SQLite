@@ -1,0 +1,71 @@
+CREATE VIEW  average_guests_per_booking AS
+select 
+    Round(AVG(adults),2) as Adults , 
+    Round(AVG(children),2) as Children , 
+    Round(AVG(Babies),2) as Babies , 
+    Round(AVG(adults + Children + Babies),2) as total_average_guests
+from 
+    hotel_project;
+    
+CREATE VIEW booking_changes_and_wait AS
+select 
+    Round(AVG(booking_changes),2) , 
+    Round(MAX(booking_changes),2) , 
+    Round(AVG(days_in_waiting_list),2) , 
+    Round(MAX(days_in_waiting_list),2)
+from 
+    hotel_projecting_list;
+
+CREATE VIEW customers_nationality AS
+SELECT 
+    country, 
+    COUNT(*) AS total_guests
+FROM hotel_project
+GROUP BY country
+ORDER BY total_guests DESC
+LIMIT 10;
+
+CREATE VIEW KPI_summary AS
+select 
+    --Average daily Rate
+    Round(AVG(adr),3) as AVG_ADR,
+    --Cancelation percentage
+    Round(SUM(is_canceled) * 100 / COUNT (*) ,3) as Cancel_Rate,
+    --Average stay period
+    Round(AVG(stays_in_weekend_nights + stays_in_week_nights),3) as AVG_stay,
+    --Average number of special requests
+    Round(AVG(total_of_special_requests),3) as AVG_Special_Requests,
+    --Percentage of repeated guests
+    Round(SUM(is_repeated_guest) *100 /Count(*) ,3) as Repeat_rate_of_guests
+   
+from 
+    hotel_project
+group by 
+    hotel;
+    
+CREATE VIEW percentage_of_bookings_that_requires_parking_space AS
+SELECT Round(1.0*(select Count(*) 
+from hotel_project
+where required_car_parking_spaces IS NOT 0)  *100 / COUNT(*),3) AS percentage_require_parking
+from hotel_project;
+
+CREATE VIEW top_10__best_meal_seller_per_room__type AS
+select meal ,reserved_room_type , COUNT(*) as total_bookings
+from
+    hotel_project
+group by meal,reserved_room_type
+order by total_bookings DESC
+LIMIT 10;
+
+CREATE VIEW way_of_booking_per_market_segment_and_distribution_channel AS
+SELECT 
+    market_segment,
+    distribution_channel,
+    COUNT(*) AS total_reservations,
+    ROUND(AVG(adr), 2) AS avg_adr
+FROM 
+    hotel_project
+GROUP BY 
+    market_segment, distribution_channel
+ORDER BY 
+    total_reservations DESC;
