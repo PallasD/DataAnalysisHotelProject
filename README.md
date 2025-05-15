@@ -40,8 +40,10 @@ This project analyzes a hotel bookings dataset in order to extract business insi
 7. Dashboard layout with slicers and filters
 
 ## 📂 Files in this Repo
+- `DataLoadingtoDB(optional).py` -Python file to create the database
 - `cleaned_hotel_bookings.csv` – cleaned dataset
 - `Hotel_project.pbix` – Power BI dashboard file
+- `Hotel_project.py` - Python file for data manipulation
 - `views.sqlite` – SQL queries for KPIs
 - `README.md` – this file
 
